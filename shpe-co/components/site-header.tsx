@@ -40,7 +40,7 @@ export default function SiteHeader() {
             {/* Divider + Chapter text */}
             <span className="hidden md:block h-8 w-px bg-slate-300" aria-hidden />
             <span className="hidden md:block text-slate-800 tracking-wide">
-              Colorado <span className="text-slate-500">Professional</span>
+              Colorado
             </span>
           </Link>
 
@@ -71,7 +71,7 @@ export default function SiteHeader() {
             )}
             {/* Emphasis for Join */}
             <a
-              href="https://www.shpe.org/membership"
+              href="https://shpe.org/membership/become-a-member/"
               target="_blank"
               rel="noopener noreferrer"
               className="ml-2 inline-flex items-center rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-semibold text-slate-900 hover:bg-slate-50"

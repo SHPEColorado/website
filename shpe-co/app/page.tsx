@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 // import UpcomingEvents from "@/components/home/upcoming-events";
 // import InstagramGrid from "@/components/home/instagram-grid";
 import SponsorsSection from "@/components/home/sponsors-section";
@@ -7,32 +8,16 @@ export default async function Home() {
   return (
     <>
       {/* HERO */}
-      <section className="bg-brand-blue-600 text-white">
+      <section className="bg-brand-blue-600 text-black">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
           <h1 className="text-3xl sm:text-5xl font-semibold max-w-3xl">
             Advancing Hispanics in STEM across Colorado.
           </h1>
-          <p className="mt-4 max-w-2xl text-white/90">
+          <p className="mt-4 max-w-2xl text-black/90">
             We connect professionals, students, and allies through networking,
             mentorship, and career development to grow Hispanic leadership in
             STEM.
           </p>
-          <div className="mt-6 flex gap-3">
-            <a
-              href="https://www.shpe.org/membership"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center rounded-lg bg-brand-orange px-4 py-2 font-semibold"
-            >
-              Join
-            </a>
-            <Link
-              href="/sponsor"
-              className="inline-flex items-center rounded-lg bg-white/10 px-4 py-2 font-semibold ring-1 ring-white/30 hover:bg-white/20"
-            >
-              Sponsor
-            </Link>
-          </div>
         </div>
       </section>
 
@@ -52,10 +37,12 @@ export default async function Home() {
             Sponsor
           </Link>
           <Link
-            href="/jobs"
+            href="https://shpe.org/membership/become-a-member/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="rounded-lg border border-slate-200 p-4 hover:bg-slate-50"
           >
-            Job Board
+            Join
           </Link>
         </div>
       </section>
@@ -81,7 +68,19 @@ export default async function Home() {
               Learn more →
             </Link>
           </div>
-          <div className="rounded-xl bg-slate-100 h-48 md:h-auto" />
+          <div
+            className="relative rounded-xl overflow-hidden bg-slate-100 shadow-sm
+                    aspect-[16/10] md:aspect-[4/3]"
+          >
+            <Image
+              src="/images/mission.png"
+              alt="SHPE Colorado members at a recent networking event"
+              fill
+              className="object-cover"
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              priority
+            />
+          </div>
         </div>
       </section>
 

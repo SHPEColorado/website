@@ -1,35 +1,38 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 
 type NavItem = { label: string; href: string; external?: boolean };
 
 const NAV: NavItem[] = [
-  { label: 'About Us',  href: '/about' },
-  { label: 'Events',    href: '/events' },
-  { label: 'Join',      href: 'https://www.shpe.org/membership', external: true },
-  { label: 'News',      href: '/news' },
-  { label: 'Job Board', href: '/jobs' },
-  { label: 'Sponsor',   href: '/sponsor' },
+  { label: "About Us", href: "/about" },
+  { label: "Events", href: "/events" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "News", href: "/news" },
+  { label: "Job Board", href: "/jobs" },
+  { label: "Sponsor", href: "/sponsor" },
 ];
 
 export default function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  const isActive = (href: string) =>
-    href !== '/' && pathname?.startsWith(href);
+  const isActive = (href: string) => href !== "/" && pathname?.startsWith(href);
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/75 border-b border-slate-200">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Left: SHPE lockup */}
-          <Link href="/" className="flex items-center gap-3" aria-label="SHPE Colorado home">
+          <Link
+            href="/"
+            className="flex items-center gap-3"
+            aria-label="SHPE Colorado home"
+          >
             <Image
               src="/brand/shpe-co-lockup-horizontal-dark.svg"
               alt="SHPE | Colorado Professional"
@@ -38,7 +41,10 @@ export default function SiteHeader() {
               priority
             />
             {/* Divider + Chapter text */}
-            <span className="hidden md:block h-8 w-px bg-slate-300" aria-hidden />
+            <span
+              className="hidden md:block h-8 w-px bg-slate-300"
+              aria-hidden
+            />
             <span className="hidden md:block text-slate-800 tracking-wide">
               Colorado
             </span>
@@ -62,7 +68,7 @@ export default function SiteHeader() {
                   key={item.label}
                   href={item.href}
                   className={`text-sm font-medium hover:text-slate-900 ${
-                    isActive(item.href) ? 'text-slate-900' : 'text-slate-700'
+                    isActive(item.href) ? "text-slate-900" : "text-slate-700"
                   }`}
                 >
                   {item.label}
@@ -113,7 +119,7 @@ export default function SiteHeader() {
                   key={item.label}
                   href={item.href}
                   className={`block rounded-md px-3 py-2 hover:bg-slate-50 ${
-                    isActive(item.href) ? 'text-slate-900' : 'text-slate-700'
+                    isActive(item.href) ? "text-slate-900" : "text-slate-700"
                   }`}
                   onClick={() => setOpen(false)}
                 >

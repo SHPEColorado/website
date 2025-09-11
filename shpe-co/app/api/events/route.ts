@@ -1,4 +1,3 @@
-// app/api/events/route.ts
 import { NextResponse } from "next/server";
 
 export const revalidate = 300; // cache this JSON for 5 minutes

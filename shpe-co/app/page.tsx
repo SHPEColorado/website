@@ -7,51 +7,67 @@ import SponsorsSection from "@/components/home/sponsors-section";
 export default async function Home() {
   return (
     <>
-    {/* HERO */}
-    <section className="border-b border-slate-200 bg-white">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10 md:py-12">
-        <div className="max-w-3xl">
-          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight leading-[1.1]">
-            Advancing Hispanics in STEM across Colorado.
-          </h1>
-          <p className="mt-3 max-w-2xl text-slate-700">
-            We connect professionals, students, and allies through networking, mentorship, and
-            career development to grow Hispanic leadership in STEM.
-          </p>
+      {/* HERO with background image + gradient scrim + quick actions */}
+      <section className="relative isolate border-b border-slate-200 text-slate-900">
+        {/* Background image */}
+        <div className="absolute inset-0 -z-10">
+          <Image
+            src="/images/colorado.jpg"
+            alt="" // decorative; text is in the foreground
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[center_60%] pointer-events-none"
+          />
+          {/* Overall wash to keep contrast consistent */}
+          <div className="absolute inset-0 bg-white/60 md:bg-white/50" />
+          {/* Left-to-right gradient so text area is extra legible */}
+          <div className="absolute inset-y-0 left-0 w-full md:w-2/3 bg-gradient-to-r from-white/90 via-white/70 to-transparent" />
         </div>
 
-        {/* Quick actions */}
-        <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <Link
-            href="/events"
-            className="h-14 rounded-xl ring-1 ring-slate-200 px-4 flex items-center justify-between hover:bg-slate-50"
-          >
-            <span>Events</span>
-            <span className="text-slate-400">→</span>
-          </Link>
-          <Link
-            href="/sponsor"
-            className="h-14 rounded-xl ring-1 ring-slate-200 px-4 flex items-center justify-between hover:bg-slate-50"
-          >
-            <span>Sponsor</span>
-            <span className="text-slate-400">→</span>
-          </Link>
-          <a
-            href="https://shpe.org/membership/become-a-member/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="h-14 rounded-xl ring-1 ring-slate-200 px-4 flex items-center justify-between hover:bg-slate-50"
-          >
-            <span>Join</span>
-            <span className="text-slate-400">→</span>
-          </a>
-        </div>
-      </div>
-    </section>
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+          <div className="max-w-3xl">
+            <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight leading-[1.1]">
+              Advancing Hispanics in STEM across Colorado.
+            </h1>
+            <p className="mt-3 max-w-2xl text-slate-800">
+              We connect professionals, students, and allies through networking,
+              mentorship, and career development to grow Hispanic leadership in
+              STEM.
+            </p>
+          </div>
 
+          {/* Quick actions */}
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Link
+              href="/events"
+              className="h-14 rounded-xl ring-1 ring-slate-200 px-4 flex items-center justify-between bg-white/70 backdrop-blur-sm hover:bg-white/90"
+            >
+              <span>Events</span>
+              <span className="text-slate-400">→</span>
+            </Link>
+            <Link
+              href="/sponsor"
+              className="h-14 rounded-xl ring-1 ring-slate-200 px-4 flex items-center justify-between bg-white/70 backdrop-blur-sm hover:bg-white/90"
+            >
+              <span>Sponsor</span>
+              <span className="text-slate-400">→</span>
+            </Link>
+            <a
+              href="https://shpe.org/membership/become-a-member/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="h-14 rounded-xl ring-1 ring-slate-200 px-4 flex items-center justify-between bg-white/70 backdrop-blur-sm hover:bg-white/90"
+            >
+              <span>Join</span>
+              <span className="text-slate-400">→</span>
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* UPCOMING EVENTS (auto) */}
-      <section className = "border-b border-slate-200">
+      <section className="border-b border-slate-200">
         <UpcomingEvents limit={4} />
       </section>
 

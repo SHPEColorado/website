@@ -8,7 +8,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning className="min-h-screen flex flex-col bg-white text-slate-900">
         <SiteHeader />
-        <main className="flex-1 py-4">{children}</main>
+        <main className="flex-1">{children}</main>
         <SiteFooter />
       </body>
     </html>

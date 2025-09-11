@@ -1,54 +1,59 @@
 import Link from "next/link";
 import Image from "next/image";
-// import UpcomingEvents from "@/components/home/upcoming-events";
+import UpcomingEvents from "@/components/home/upcoming-events";
 // import InstagramGrid from "@/components/home/instagram-grid";
 import SponsorsSection from "@/components/home/sponsors-section";
 
 export default async function Home() {
   return (
     <>
-      {/* HERO */}
-      <section className="bg-brand-blue-600 text-black">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-          <h1 className="text-3xl sm:text-5xl font-semibold max-w-3xl">
+    {/* HERO */}
+    <section className="border-b border-slate-200 bg-white">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10 md:py-12">
+        <div className="max-w-3xl">
+          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight leading-[1.1]">
             Advancing Hispanics in STEM across Colorado.
           </h1>
-          <p className="mt-4 max-w-2xl text-black/90">
-            We connect professionals, students, and allies through networking,
-            mentorship, and career development to grow Hispanic leadership in
-            STEM.
+          <p className="mt-3 max-w-2xl text-slate-700">
+            We connect professionals, students, and allies through networking, mentorship, and
+            career development to grow Hispanic leadership in STEM.
           </p>
         </div>
-      </section>
 
-      {/* QUICK ACTIONS */}
-      <section className="border-b border-slate-200">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+        {/* Quick actions */}
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
           <Link
             href="/events"
-            className="rounded-lg border border-slate-200 p-4 hover:bg-slate-50"
+            className="h-14 rounded-xl ring-1 ring-slate-200 px-4 flex items-center justify-between hover:bg-slate-50"
           >
-            Events
+            <span>Events</span>
+            <span className="text-slate-400">→</span>
           </Link>
           <Link
             href="/sponsor"
-            className="rounded-lg border border-slate-200 p-4 hover:bg-slate-50"
+            className="h-14 rounded-xl ring-1 ring-slate-200 px-4 flex items-center justify-between hover:bg-slate-50"
           >
-            Sponsor
+            <span>Sponsor</span>
+            <span className="text-slate-400">→</span>
           </Link>
-          <Link
+          <a
             href="https://shpe.org/membership/become-a-member/"
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-lg border border-slate-200 p-4 hover:bg-slate-50"
+            className="h-14 rounded-xl ring-1 ring-slate-200 px-4 flex items-center justify-between hover:bg-slate-50"
           >
-            Join
-          </Link>
+            <span>Join</span>
+            <span className="text-slate-400">→</span>
+          </a>
         </div>
-      </section>
+      </div>
+    </section>
+
 
       {/* UPCOMING EVENTS (auto) */}
-      {/* <UpcomingEvents limit={4} /> */}
+      <section className = "border-b border-slate-200">
+        <UpcomingEvents limit={4} />
+      </section>
 
       {/* MISSION */}
       <section className="py-12">
@@ -87,7 +92,7 @@ export default async function Home() {
       {/* INSTAGRAM FLYERS (auto) */}
       {/* <InstagramGrid limit={6} /> */}
 
-      {/* SPONSORS STRIP (placeholder) */}
+      {/* SPONSORS*/}
       <SponsorsSection />
     </>
   );

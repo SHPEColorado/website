@@ -120,3 +120,27 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Full Calendar Styles */
+.fc {
+  --fc-border-color: rgb(226 232 240); /* slate-200 */
+  --fc-page-bg-color: transparent;
+}
+.fc .fc-toolbar-title {
+  font-weight: 600;
+}
+.fc .fc-button {
+  background: #fff;
+  color: #0f172a; /* slate-900 */
+  border: 1px solid rgb(203 213 225); /* slate-300 */
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+}
+.fc .fc-button:hover {
+  background: rgb(248 250 252);
+} /* slate-50 */
+.fc .fc-button-primary:disabled {
+  background: #fff;
+  color: rgb(148 163 184);
+  border-color: rgb(226 232 240);
+}

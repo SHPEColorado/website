@@ -1,16 +1,24 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 import {
   SPONSORS,
   SPONSOR_TIERS,
   type Sponsor,
   type SponsorTier,
-} from "@/lib/sponsors";
+} from '@/lib/sponsors';
+
+/* ---------- shared styles ---------- */
 
 const titleClass =
-  "w-full !text-center text-2xl font-semibold tracking-tight text-slate-900";
+  'w-full !text-center text-2xl font-semibold tracking-tight text-slate-900';
+
+// Pick one global badge size for all tiers
+type BadgeSize = 'sm' | 'md' | 'lg' | 'xl';
+const BADGE_SIZE: BadgeSize = 'md';
+
+/* ---------- page section ---------- */
 
 export default function SponsorsSection() {
   const groups = groupByTier(SPONSORS);
@@ -28,16 +36,16 @@ export default function SponsorsSection() {
             const items = groups[tier] ?? [];
             if (!items.length) return null;
 
-            // layout & size per tier
+            // Layout & logo size per tier (tweak freely)
             const config: Record<
               SponsorTier,
-              { cols: 1 | 2 | 3; size: "xl" | "lg" | "md" | "sm" }
+              { cols: 1 | 2 | 3; size: 'xl' | 'lg' | 'md' | 'sm' }
             > = {
-              platinum: { cols: 1, size: "md" },
-              gold: { cols: 1, size: "xl" },
-              silver: { cols: 2, size: "md" },
-              bronze: { cols: 2, size: "md" },
-              partner: { cols: 2, size: "sm" },
+              platinum: { cols: 1, size: 'md' },
+              gold: { cols: 1, size: 'lg' },
+              silver: { cols: 2, size: 'md' },
+              bronze: { cols: 2, size: 'md' },
+              partner: { cols: 2, size: 'sm' }, // unused here
             };
 
             const { cols, size } = config[tier];
@@ -49,14 +57,14 @@ export default function SponsorsSection() {
                 items={items}
                 cols={cols}
                 size={size}
-                priority={tier === "platinum"}
+                priority={tier === 'platinum'}
               />
             );
           })}
         </div>
       </section>
 
-      {/* PARTNERSHIPS */}
+      {/* PARTNERSHIPS (no badge) */}
       {groups.partner?.length ? (
         <section className="py-8">
           <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
@@ -85,55 +93,57 @@ function TierRow({
   cols,
   size,
   priority = false,
-  hideBadge = false, // 👈 new
+  hideBadge = false,
 }: {
   tier: SponsorTier;
   items: Sponsor[];
   cols: 1 | 2 | 3;
-  size: "xl" | "lg" | "md" | "sm";
+  size: 'xl' | 'lg' | 'md' | 'sm';
   priority?: boolean;
-  hideBadge?: boolean; // 👈 new
+  hideBadge?: boolean;
 }) {
+  // image height & max width per size
   const imgHeights =
-    size === "xl"
-      ? "h-20 sm:h-24 lg:h-28"
-      : size === "lg"
-      ? "h-16 sm:h-20 lg:h-24"
-      : size === "md"
-      ? "h-14 sm:h-16 lg:h-18"
-      : "h-12 sm:h-14 lg:h-16";
+    size === 'xl'
+      ? 'h-20 sm:h-24 lg:h-28'
+      : size === 'lg'
+      ? 'h-16 sm:h-20 lg:h-24'
+      : size === 'md'
+      ? 'h-14 sm:h-16 lg:h-18'
+      : 'h-12 sm:h-14 lg:h-16';
 
   const maxW =
-    size === "xl"
-      ? "max-w-[min(85vw,520px)]"
-      : size === "lg"
-      ? "max-w-[420px]"
-      : size === "md"
-      ? "max-w-[320px]"
-      : "max-w-[240px]";
+    size === 'xl'
+      ? 'max-w-[min(85vw,520px)]'
+      : size === 'lg'
+      ? 'max-w-[420px]'
+      : size === 'md'
+      ? 'max-w-[320px]'
+      : 'max-w-[240px]';
 
   const sizesAttr =
-    size === "xl"
-      ? "(min-width:1024px) 520px, (min-width:640px) 360px, 260px"
-      : "(min-width:1024px) 380px, (min-width:640px) 300px, 220px";
+    size === 'xl'
+      ? '(min-width:1024px) 520px, (min-width:640px) 360px, 260px'
+      : '(min-width:1024px) 380px, (min-width:640px) 300px, 220px';
 
+  // grid columns on the RIGHT side (logos)
   const rightCols =
     cols === 1
-      ? "grid-cols-1 justify-center"
+      ? 'grid-cols-1 justify-center'
       : cols === 2
-      ? "grid-cols-1 sm:grid-cols-2 justify-center"
-      : "grid-cols-2 sm:grid-cols-3 justify-center";
+      ? 'grid-cols-1 sm:grid-cols-2 justify-center'
+      : 'grid-cols-2 sm:grid-cols-3 justify-center';
 
   // If we hide the badge, don't allocate the left column.
   const wrapperClass = hideBadge
-    ? "mt-6"
-    : "mt-6 grid grid-cols-[auto,1fr] items-center gap-x-6 gap-y-4";
+    ? 'mt-6'
+    : 'mt-6 grid grid-cols-[auto,1fr] items-center gap-x-6 gap-y-4';
 
   return (
     <div className={wrapperClass}>
       {!hideBadge && (
-        <div className="justify-self-start">
-          <TierBadge tier={tier} />
+        <div className="justify-self-start self-center">
+          <TierBadge tier={tier} size={BADGE_SIZE} />
           <span className="sr-only">{ReadableTier[tier]} sponsors</span>
         </div>
       )}
@@ -180,24 +190,43 @@ function groupByTier(items: Sponsor[]) {
 }
 
 const ReadableTier: Record<SponsorTier, string> = {
-  platinum: "Platinum",
-  gold: "Gold",
-  silver: "Silver",
-  bronze: "Bronze",
-  partner: "Partner",
+  platinum: 'Platinum',
+  gold: 'Gold',
+  silver: 'Silver',
+  bronze: 'Bronze',
+  partner: 'Partner',
 };
 
-function TierBadge({ tier }: { tier: SponsorTier }) {
-  const style: Record<SponsorTier, string> = {
-    platinum: "bg-slate-100 text-slate-700 ring-1 ring-slate-300",
-    gold: "bg-amber-300/80 text-amber-900 ring-1 ring-amber-400",
-    silver: "bg-zinc-200 text-zinc-800 ring-1 ring-zinc-400",
-    bronze: "bg-orange-300/80 text-amber-900 ring-1 ring-amber-400",
-    partner: "bg-slate-100 text-slate-700 ring-1 ring-slate-300",
+function TierBadge({
+  tier,
+  size = 'md', // 'sm' | 'md' | 'lg' | 'xl'
+}: {
+  tier: SponsorTier;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+}) {
+  const color: Record<SponsorTier, string> = {
+    platinum: 'bg-slate-100 text-slate-700 ring-1 ring-slate-300',
+    gold: 'bg-amber-300/80 text-amber-900 ring-1 ring-amber-400',
+    silver: 'bg-zinc-200 text-zinc-800 ring-1 ring-zinc-400',
+    bronze: 'bg-orange-300/80 text-amber-900 ring-1 ring-amber-400',
+    partner: 'bg-slate-100 text-slate-700 ring-1 ring-slate-300',
   };
+
+  const sz =
+    size === 'xl'
+      ? 'text-base px-4 py-1.5'
+      : size === 'lg'
+      ? 'text-sm px-3.5 py-1'
+      : size === 'md'
+      ? 'text-sm px-3 py-0.5'
+      : /* sm */ 'text-xs px-2.5 py-0.5';
+
+  // Make big badges feel a touch bolder
+  const ringWidth = size === 'xl' || size === 'lg' ? 'ring-2' : '';
+
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${style[tier]}`}
+      className={`inline-flex items-center justify-center rounded-full font-medium ${color[tier]} ${sz} ${ringWidth}`}
       aria-hidden="true"
     >
       {ReadableTier[tier]}

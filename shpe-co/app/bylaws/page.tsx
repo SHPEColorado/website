@@ -1,9 +1,10 @@
+export const dynamic = "force-dynamic";
+
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Bylaws | SHPE Colorado",
-  description:
-    "Review the SHPE Colorado Professional Chapter bylaws.",
+  description: "Review the SHPE Colorado Professional Chapter bylaws.",
 };
 
 // Put the PDF in /public/docs/
@@ -18,7 +19,9 @@ export default function BylawsPage() {
       {/* Intro (centered) */}
       <section className="pt-6">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">Bylaws</h1>
+          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">
+            Bylaws
+          </h1>
           <p className="mt-3 text-slate-700">
             Review the SHPE Colorado Professional Chapter bylaws below.
           </p>

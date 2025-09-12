@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import type { Metadata } from "next";
 import EventsCalendar from "@/components/events/events-calendar";
 import SubscribeButtons from "@/components/events/subscribe-buttons";

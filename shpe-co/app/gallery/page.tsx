@@ -21,12 +21,12 @@ export default async function GalleryPage() {
   const images: GImage[] = res.ok ? await res.json() : [];
 
   return (
-    <section className="py-10">
+    <section className="py-6">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-center">
           Gallery
         </h1>
-        <p className="mt-2 text-slate-600">
+        <p className="mt-2 text-slate-600 text-center">
           Photos from SHPE Colorado events and community moments.
         </p>
 

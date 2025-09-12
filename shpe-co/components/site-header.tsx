@@ -13,7 +13,7 @@ const NAV: NavItem[] = [
   { label: "Events", href: "/events" },
   { label: "Gallery", href: "/gallery" },
   { label: "News", href: "/news" },
-  { label: "Job Board", href: "/jobs" },
+  { label: "Job Board", href: "/job-board" },
   { label: "Sponsor", href: "/sponsor" },
 ];
 

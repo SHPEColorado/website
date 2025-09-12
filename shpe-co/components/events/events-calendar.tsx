@@ -5,7 +5,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
-import type { CalendarApi } from "@fullcalendar/core";
+import type { CalendarApi, EventClickArg } from "@fullcalendar/core";
 
 type EventInput = {
   id: string;
@@ -14,36 +14,25 @@ type EventInput = {
   end?: string;
   allDay?: boolean;
   url?: string;
-  extendedProps?: Record<string, any>;
+  extendedProps?: Record<string, unknown>;
 };
 
 export default function EventsCalendar() {
   const [events, setEvents] = useState<EventInput[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const calendarRef = useRef<FullCalendar | null>(null);
-  const [isMobile, setIsMobile] = useState(false); // used only for toolbar/layout tweaks
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Load events
   useEffect(() => {
     let active = true;
     (async () => {
       try {
         const now = new Date();
-        const from = new Date(
-          now.getFullYear(),
-          now.getMonth() - 1,
-          1
-        ).toISOString();
-        const to = new Date(
-          now.getFullYear(),
-          now.getMonth() + 13,
-          1
-        ).toISOString();
-        const res = await fetch(`/api/events?from=${from}&to=${to}`, {
-          cache: "no-store",
-        });
+        const from = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString();
+        const to = new Date(now.getFullYear(), now.getMonth() + 13, 1).toISOString();
+        const res = await fetch(`/api/events?from=${from}&to=${to}`, { cache: "no-store" });
         if (!res.ok) throw new Error(await res.text());
-        const data = await res.json();
+        const data: EventInput[] = await res.json();
         if (active) setEvents(data);
       } catch (e) {
         console.error(e);
@@ -55,7 +44,7 @@ export default function EventsCalendar() {
     };
   }, []);
 
-  // Switch view based on viewport (≤640px -> listMonth, else dayGridMonth)
+  // Media query handling without ts-ignore
   useEffect(() => {
     if (typeof window === "undefined") return;
     const mql = window.matchMedia("(max-width: 640px)");
@@ -63,27 +52,35 @@ export default function EventsCalendar() {
     const apply = (mobile: boolean) => {
       setIsMobile(mobile);
       const api: CalendarApi | undefined = calendarRef.current?.getApi();
-      if (api) api.changeView(mobile ? "listMonth" : "dayGridMonth");
+      api?.changeView(mobile ? "listMonth" : "dayGridMonth");
     };
 
-    apply(mql.matches); // set on mount
+    apply(mql.matches);
 
     const handler = (e: MediaQueryListEvent) => apply(e.matches);
-    mql.addEventListener?.("change", handler);
-    // Fallback for older browsers
-    // @ts-ignore
-    mql.addListener?.(handler);
 
-    return () => {
-      mql.removeEventListener?.("change", handler);
-      // @ts-ignore
-      mql.removeListener?.(handler);
+    if (typeof mql.addEventListener === "function") {
+      mql.addEventListener("change", handler);
+      return () => mql.removeEventListener("change", handler);
+    }
+    // Legacy Safari
+    type LegacyMql = MediaQueryList & {
+      addListener: (cb: (e: MediaQueryListEvent) => void) => void;
+      removeListener: (cb: (e: MediaQueryListEvent) => void) => void;
     };
+    if (typeof (mql as Partial<LegacyMql>).addListener === "function") {
+      const legacy = mql as LegacyMql;
+      legacy.addListener(handler);
+      return () => legacy.removeListener(handler);
+    }
+    return;
   }, []);
 
-  const onEventClick = (info: any) => {
+  const onEventClick = (info: EventClickArg) => {
     info.jsEvent.preventDefault();
-    const href = info.event.extendedProps?.ticketUrl || info.event.url;
+    const href =
+      (info.event.extendedProps as { ticketUrl?: string } | undefined)?.ticketUrl ||
+      info.event.url;
     if (href) window.open(href, "_blank", "noopener");
   };
 
@@ -91,26 +88,20 @@ export default function EventsCalendar() {
     <div className="rounded-xl border border-slate-200 bg-white p-3 sm:p-4">
       {error && <p className="text-sm text-red-600">{error}</p>}
       {!events ? (
-        <div className="h-64 flex items-center justify-center text-slate-500">
-          Loading events…
-        </div>
+        <div className="h-64 flex items-center justify-center text-slate-500">Loading events…</div>
       ) : (
         <FullCalendar
           ref={calendarRef}
           plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
-          initialView="dayGridMonth" // desktop default; mobile switched in effect
-          headerToolbar={{
-            left: "prev,next today",
-            center: "title",
-            right: "dayGridMonth,listMonth", // show both; user can toggle
-          }}
+          initialView="dayGridMonth"
+          headerToolbar={{ left: "prev,next today", center: "title", right: "dayGridMonth,listMonth" }}
           buttonText={{ today: "Today", month: "Month", list: "List" }}
           events={events}
           eventClick={onEventClick}
           height="auto"
           nowIndicator
           displayEventEnd
-          dayMaxEventRows={isMobile ? false : 3} // month view cap; list view ignores this
+          dayMaxEventRows={isMobile ? false : 3}
         />
       )}
     </div>

@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default function JobBoardLogin({
   searchParams,
@@ -32,7 +32,9 @@ export default function JobBoardLogin({
             className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2"
           />
           {error && (
-            <p className="text-sm text-red-600">Incorrect password. Please try again.</p>
+            <p className="text-sm text-red-600">
+              Incorrect password. Please try again.
+            </p>
           )}
           <button
             type="submit"
@@ -42,12 +44,12 @@ export default function JobBoardLogin({
           </button>
         </form>
 
-        <a
+        <Link
           href="/"
           className="mt-4 inline-block text-sm text-slate-600 hover:underline underline-offset-2"
         >
           Back to home
-        </a>
+        </Link>
       </div>
     </section>
   );

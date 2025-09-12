@@ -1,5 +1,17 @@
-// Server Component: fetches existing /api/events and shows a small list
 import Link from "next/link";
+
+type UiEvent = {
+  id: string;
+  title: string;
+  start: string;
+  end?: string;
+  url?: string;
+  extendedProps?: {
+    location?: string;
+    ticketUrl?: string;
+    gcalUrl?: string;
+  };
+};
 
 export default async function UpcomingEvents({
   limit = 4,
@@ -8,9 +20,11 @@ export default async function UpcomingEvents({
 }) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/api/events`,
-    { next: { revalidate: 300 } }
+    {
+      next: { revalidate: 300 },
+    }
   );
-  const events = res.ok ? await res.json() : [];
+  const events: UiEvent[] = res.ok ? await res.json() : [];
   const upcoming = events.slice(0, limit);
 
   return (
@@ -26,9 +40,8 @@ export default async function UpcomingEvents({
           </Link>
         </div>
 
-        {/* stretch cards to equal height per row */}
         <div className="mt-6 grid gap-4 items-stretch sm:grid-cols-2 lg:grid-cols-4">
-          {upcoming.map((e: any) => {
+          {upcoming.map((e) => {
             const ticketUrl = e.extendedProps?.ticketUrl ?? e.url;
             const gcalUrl = e.extendedProps?.gcalUrl ?? e.url;
             return (
@@ -44,9 +57,7 @@ export default async function UpcomingEvents({
                     : ""}
                 </p>
 
-                {/* actions pinned to bottom */}
                 <div className="mt-auto pt-4 flex items-center gap-2">
-                  {/* optional Tickets button on the left (hide if same as gcal) */}
                   {ticketUrl && ticketUrl !== gcalUrl && (
                     <a
                       href={ticketUrl}
@@ -57,8 +68,6 @@ export default async function UpcomingEvents({
                       Tickets
                     </a>
                   )}
-
-                  {/* always bottom-right */}
                   <a
                     href={gcalUrl}
                     target="_blank"

@@ -1,12 +1,21 @@
 import Link from "next/link";
 
-export default function JobBoardLogin({
+type SP = {
+  error?: string | string[];
+  next?: string | string[];
+};
+
+export default async function JobBoardLogin({
   searchParams,
 }: {
-  searchParams: { error?: string; next?: string };
+  searchParams: Promise<SP>;
 }) {
-  const next = searchParams?.next || "/job-board";
-  const error = searchParams?.error === "1";
+  const sp = await searchParams;
+  const nextValue = Array.isArray(sp.next) ? sp.next[0] : sp.next;
+  const errorValue = Array.isArray(sp.error) ? sp.error[0] : sp.error;
+
+  const next = nextValue || "/job-board";
+  const error = errorValue === "1";
 
   return (
     <section className="py-12">

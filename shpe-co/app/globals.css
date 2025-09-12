@@ -128,13 +128,16 @@
 }
 .fc .fc-toolbar-title {
   font-weight: 600;
+  font-size: 1.125rem; /* ~text-lg */
+  line-height: 1.5rem;
 }
 .fc .fc-button {
   background: #fff;
   color: #0f172a; /* slate-900 */
   border: 1px solid rgb(203 213 225); /* slate-300 */
-  padding: 0.375rem 0.75rem;
   border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem; /* slightly smaller buttons */
+  font-size: 0.875rem; /* ~text-sm */
 }
 .fc .fc-button:hover {
   background: rgb(248 250 252);
@@ -143,4 +146,18 @@
   background: #fff;
   color: rgb(148 163 184);
   border-color: rgb(226 232 240);
+}
+
+/* FullCalendar: make the header wrap on small screens */
+@media (max-width: 640px) {
+  .fc .fc-header-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+  /* Put the title on its own row if needed */
+  .fc .fc-header-toolbar .fc-toolbar-chunk:nth-child(2) {
+    order: 3; /* move title after the button groups */
+    flex-basis: 100%; /* full width row */
+  }
 }

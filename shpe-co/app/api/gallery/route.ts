@@ -2,9 +2,37 @@ import { NextResponse } from "next/server";
 
 const API = "https://www.googleapis.com/drive/v3/files";
 
+type DriveImageMeta = { width?: number; height?: number };
+type DriveFile = {
+  id: string;
+  name: string;
+  mimeType: string;
+  webViewLink?: string;
+  imageMediaMetadata?: DriveImageMeta;
+};
+type DriveListResponse = { files?: DriveFile[] };
+
+function isRecord(v: unknown): v is Record<string, unknown> {
+  return typeof v === "object" && v !== null;
+}
+function isDriveFile(v: unknown): v is DriveFile {
+  return (
+    isRecord(v) &&
+    typeof v.id === "string" &&
+    typeof v.name === "string" &&
+    typeof v.mimeType === "string"
+  );
+}
+function coerceDriveListResponse(v: unknown): DriveListResponse {
+  if (!isRecord(v)) return {};
+  const raw = (v as { files?: unknown }).files;
+  if (!Array.isArray(raw)) return {};
+  return { files: raw.filter(isDriveFile) };
+}
+
 export async function GET() {
-  const key = process.env.GOOGLE_DRIVE_API_KEY!;
-  const folder = process.env.GOOGLE_DRIVE_FOLDER_ID!;
+  const key = process.env.GOOGLE_DRIVE_API_KEY;
+  const folder = process.env.GOOGLE_DRIVE_FOLDER_ID;
   if (!key || !folder) {
     return NextResponse.json({ error: "Missing env vars" }, { status: 500 });
   }
@@ -13,7 +41,7 @@ export async function GET() {
     key,
     q: `'${folder}' in parents and mimeType contains 'image/' and trashed=false`,
     fields:
-      "files(id,name,mimeType,webViewLink,thumbnailLink,imageMediaMetadata(width,height))",
+      "files(id,name,mimeType,webViewLink,imageMediaMetadata(width,height))",
     pageSize: "200",
     orderBy: "createdTime desc",
     supportsAllDrives: "true",
@@ -21,28 +49,20 @@ export async function GET() {
   });
 
   const r = await fetch(`${API}?${params.toString()}`, {
-    // server-side cache to keep it snappy
     next: { revalidate: 600 },
   });
+  if (!r.ok)
+    return NextResponse.json({ error: await r.text() }, { status: r.status });
 
-  if (!r.ok) {
-    const text = await r.text();
-    return NextResponse.json({ error: text }, { status: r.status });
-  }
+  const json: unknown = await r.json();
+  const data = coerceDriveListResponse(json);
 
-  const data = await r.json();
-
-  // Build direct view URLs. For public files, this works well:
-  //  - viewUrl: large image for <img>
-  //  - pageUrl: opens the Drive viewer (nice for sharing)
-  const images = (data.files ?? []).map((f: any) => ({
-    id: f.id as string,
-    name: f.name as string,
-    mimeType: f.mimeType as string,
-    pageUrl: f.webViewLink as string,
-    // Either of these work; uc?export=view is simple and reliable for public files
+  const images = (data.files ?? []).map((f) => ({
+    id: f.id,
+    name: f.name,
+    mimeType: f.mimeType,
+    pageUrl: f.webViewLink ?? `https://drive.google.com/file/d/${f.id}/view`,
     viewUrl: `https://drive.google.com/uc?export=view&id=${f.id}`,
-    // dimensions (if available)
     width: f.imageMediaMetadata?.width ?? null,
     height: f.imageMediaMetadata?.height ?? null,
   }));

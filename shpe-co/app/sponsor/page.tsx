@@ -14,28 +14,6 @@ const pdfUrlFit = `${pdfUrl}#zoom=page-width&view=FitH`;
 
 // Pre-filled email (mailto) with a short template
 const email = "vpcorporaterelations@shpecolorado.org";
-const subject = encodeURIComponent("Sponsorship Inquiry — SHPE Colorado");
-const body = encodeURIComponent(
-  [
-    "Hello SHPE Colorado Corporate Relations Team,",
-    "",
-    "I’m reaching out about sponsoring SHPE Colorado.",
-    "",
-    "Company:",
-    "Point of Contact:",
-    "Sponsorship interest/tier (if known):",
-    "Goals for this partnership:",
-    "",
-    "We’d love to learn more about benefits, timelines, and next steps.",
-    "",
-    "Thank you!",
-    "",
-    "[Your name]",
-    "[Title / Team]",
-    "[Phone]",
-  ].join("\n")
-);
-const MAILTO = `mailto:${email}?subject=${subject}&body=${body}`;
 
 export default function SponsorPage() {
   return (
@@ -43,7 +21,9 @@ export default function SponsorPage() {
       {/* Intro (centered) */}
       <section className="pt-6">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">Sponsors</h1>
+          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">
+            Sponsors
+          </h1>
           <p className="mt-3 text-slate-700">
             Interested in being a sponsor? Review our sponsorship package below.
             If you have any questions, please reach out to{" "}
@@ -52,7 +32,8 @@ export default function SponsorPage() {
               href={`mailto:${email}`}
             >
               {email}
-            </a>.
+            </a>
+            .
           </p>
         </div>
       </section>
@@ -89,11 +70,14 @@ export default function SponsorPage() {
       {/* Volunteer Hour Matching */}
       <section className="border-t border-slate-200 py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-semibold text-center">Volunteer Hour Matching</h2>
+          <h2 className="text-2xl font-semibold text-center">
+            Volunteer Hour Matching
+          </h2>
 
           <p className="mt-3 text-slate-700 text-center max-w-3xl mx-auto">
-            For every hour you invest in our chapter, your company may donate money to SHPE Colorado
-            through its employee volunteer matching program. For example, some companies match at
+            For every hour you invest in our chapter, your company may donate
+            money to SHPE Colorado through its employee volunteer matching
+            program. For example, some companies match at
             <span className="font-semibold"> $10 per volunteer hour</span>.
           </p>
 
@@ -103,18 +87,26 @@ export default function SponsorPage() {
             </p>
             <ul className="mt-3 list-disc pl-6 space-y-2 text-slate-700 text-left">
               <li>
-                Find your company’s volunteering platform (e.g., <span className="font-medium">Benevity</span>,{" "}
-                <span className="font-medium">YourCause</span>, CyberGrants, etc.).
+                Find your company’s volunteering platform (e.g.,{" "}
+                <span className="font-medium">Benevity</span>,{" "}
+                <span className="font-medium">YourCause</span>, CyberGrants,
+                etc.).
               </li>
               <li>
-                Track every hour you invest in SHPE Colorado: in-person volunteering, attending community events,
-                or knowledge sharing.
+                Track every hour you invest in SHPE Colorado: in-person
+                volunteering, attending community events, or knowledge sharing.
               </li>
-              <li>Submit your hours regularly—setting a quarterly reminder works well.</li>
+              <li>
+                Submit your hours regularly—setting a quarterly reminder works
+                well.
+              </li>
               <li>
                 Search for our organization as{" "}
-                <span className="font-medium">&ldquo;SHPE Colorado Professional&rdquo;</span> when logging your time.
-                (If a tax ID or address is required, contact us and we’ll provide the details.)
+                <span className="font-medium">
+                  &ldquo;SHPE Colorado Professional&rdquo;
+                </span>{" "}
+                when logging your time. (If a tax ID or address is required,
+                contact us and we’ll provide the details.)
               </li>
             </ul>
           </div>

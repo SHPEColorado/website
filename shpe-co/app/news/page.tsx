@@ -1,5 +1,12 @@
 export const revalidate = 300;
 
+type NewsletterItem = {
+  id: string;
+  title: string;
+  url: string;
+  sentAt?: string;
+};
+
 function fmt(date?: string) {
   try {
     return date
@@ -19,9 +26,12 @@ export default async function NewsPage() {
   const res = await fetch(`${base}/api/newsletters/rss`, {
     next: { revalidate: 300 },
   });
-  const { items = [] } = res.ok ? await res.json() : { items: [] };
 
-  const latest = items[0]; // Mailchimp RSS is newest-first
+  const data: { items: NewsletterItem[] } = res.ok
+    ? await res.json()
+    : { items: [] };
+  const items = data.items;
+  const latest: NewsletterItem | undefined = items[0]; // newest-first
 
   return (
     <section className="py-10">
@@ -45,7 +55,6 @@ export default async function NewsPage() {
                 {fmt(latest.sentAt)}
               </p>
 
-              {/* Same “ghost” button style as Upcoming Events */}
               <div className="mt-4 flex justify-end">
                 <a
                   href={latest.url}
@@ -62,7 +71,7 @@ export default async function NewsPage() {
 
         {/* Grid of recent items */}
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((n) => (
+          {items.map((n: NewsletterItem) => (
             <article
               key={n.id}
               className="rounded-xl border border-slate-200 bg-white p-5 flex flex-col"
@@ -70,7 +79,6 @@ export default async function NewsPage() {
               <h3 className="font-semibold">{n.title}</h3>
               <p className="mt-1 text-sm text-slate-600">{fmt(n.sentAt)}</p>
 
-              {/* Button pinned bottom-right, matching Upcoming Events style */}
               <div className="mt-auto pt-4 flex justify-end">
                 <a
                   href={n.url}

@@ -32,13 +32,6 @@ export const SPONSORS: Sponsor[] = [
     alt: "Eaton",
   },
   {
-    name: "CoBank",
-    url: "https://www.cobank.com/",
-    logo: "/sponsors/cobank.png",
-    tier: "gold",
-    alt: "CoBank",
-  },
-  {
     name: "JVA Consulting Engineers",
     url: "https://www.jvajva.com/",
     logo: "/sponsors/jva.webp",

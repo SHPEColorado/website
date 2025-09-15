@@ -13,12 +13,45 @@ type GCalEvent = {
   end?: { date?: string; dateTime?: string; timeZone?: string };
 };
 
-// Prefer an Eventbrite URL from the description; else the first URL; else the GCal link
-function pickTicketUrl(description?: string, fallback?: string) {
+// Prefer Eventbrite, then Google Forms (forms.gle or docs.google.com/forms),
+// otherwise first URL found, otherwise the fallback (the GCal htmlLink).
+function pickTicketUrl(description?: string, fallback?: string): string | undefined {
   if (!description) return fallback;
-  const urls = Array.from(description.matchAll(/https?:\/\/[^\s)]+/gi)).map((m) => m[0]);
-  const eb = urls.find((u) => /eventbrite\./i.test(u));
-  return eb ?? urls[0] ?? fallback;
+
+  // Collect URLs from both plain text and href="…"
+  const urls = new Set<string>();
+
+  // 1) href="https://…"
+  const hrefRe = /href\s*=\s*"([^"]+)"/gi;
+  for (const m of description.matchAll(hrefRe)) {
+    urls.add(m[1]);
+  }
+
+  // 2) plain text https://… (avoid grabbing trailing punctuation)
+  const urlRe = /https?:\/\/[^\s"'<>)]*/gi;
+  for (const m of description.matchAll(urlRe)) {
+    urls.add(m[0]);
+  }
+
+  // Normalize each URL
+  const list = Array.from(urls)
+    .map((u) => u.replace(/&amp;/g, "&"))             // decode common HTML entity
+    .map((u) => u.replace(/[).,]+$/g, ""));           // trim trailing punctuation
+
+  // Preference order
+  const PREFER = [
+    /(^|\.)(eventbrite)\./i,
+    /(^|\.)(forms)\.gle\b/i,
+    /docs\.google\.com\/forms/i,
+  ];
+
+  for (const pat of PREFER) {
+    const hit = list.find((u) => pat.test(u));
+    if (hit) return hit;
+  }
+
+  // Otherwise first URL found, else fallback to the calendar link
+  return list[0] ?? fallback;
 }
 
 export async function GET(req: Request) {

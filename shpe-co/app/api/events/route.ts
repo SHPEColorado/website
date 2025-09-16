@@ -41,6 +41,26 @@ function isImagePath(urlStr: string): boolean {
   }
 }
 
+/** Treat Google Drive/Docs/googleusercontent hosts as *flyer* sources, not tickets */
+function isDriveLike(urlStr: string): boolean {
+  try {
+    const u = new URL(urlStr);
+    const host = u.hostname.toLowerCase();
+
+    if (host === "drive.google.com") return true;
+    if (/^lh\d*\.googleusercontent\.com$/.test(host)) return true;
+    if (
+      host === "docs.google.com" &&
+      /\/(uc|file|document|presentation|spreadsheets)\b/i.test(u.pathname)
+    ) {
+      return true;
+    }
+    return false;
+  } catch {
+    return false;
+  }
+}
+
 // Prefer a Google Drive file (converted to a direct viewer URL), else first image URL
 function pickFlyerUrl(description?: string): string | undefined {
   if (!description) return undefined;
@@ -58,7 +78,7 @@ function pickFlyerUrl(description?: string): string | undefined {
 }
 
 // Prefer Eventbrite, then Google Forms (forms.gle or docs.google.com/forms),
-// otherwise first URL found, otherwise the fallback (the GCal htmlLink).
+// otherwise first "safe" URL found (i.e., not Drive nor an image), else the fallback (the GCal htmlLink).
 function pickTicketUrl(
   description?: string,
   fallback?: string
@@ -85,7 +105,10 @@ function pickTicketUrl(
     .map((u) => u.replace(/&amp;/g, "&")) // decode common HTML entity
     .map((u) => u.replace(/[).,]+$/g, "")); // trim trailing punctuation
 
-  // Preference order
+  // HARDENING: remove Drive/Docs/googleusercontent and direct image URLs
+  const safe = list.filter((u) => !isDriveLike(u) && !isImagePath(u));
+
+  // Preference order among *safe* URLs
   const PREFER = [
     /(^|\.)(eventbrite)\./i,
     /(^|\.)(forms)\.gle\b/i,
@@ -93,12 +116,12 @@ function pickTicketUrl(
   ];
 
   for (const pat of PREFER) {
-    const hit = list.find((u) => pat.test(u));
+    const hit = safe.find((u) => pat.test(u));
     if (hit) return hit;
   }
 
-  // Otherwise first URL found, else fallback to the calendar link
-  return list[0] ?? fallback;
+  // Otherwise first safe URL found, else fallback to the calendar link
+  return safe[0] ?? fallback;
 }
 
 export async function GET(req: Request) {
@@ -115,6 +138,7 @@ export async function GET(req: Request) {
     );
   }
 
+  // Optional query overrides: /api/events?from=2025-01-01&to=2026-01-01
   const { searchParams } = new URL(req.url);
   const from = searchParams.get("from");
   const to = searchParams.get("to");
@@ -158,7 +182,7 @@ export async function GET(req: Request) {
         const end = e.end?.dateTime ?? e.end?.date ?? null;
         const desc = e.description ?? "";
         const gcalUrl = e.htmlLink ?? "";
-        const ticketUrl = pickTicketUrl(desc, gcalUrl);
+        const ticketUrl = pickTicketUrl(desc, gcalUrl); // ← hardened
         const flyerUrl = pickFlyerUrl(desc);
 
         return {

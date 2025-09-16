@@ -11,6 +11,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        + <title>SHPE Colorado</title>+{" "}
+        <meta
+          name="description"
+          content="SHPE Colorado — advancing Hispanics in STEM across Colorado through networking, mentorship, and career development."
+        />
+        +{" "}
+      </head>
       <body
         suppressHydrationWarning
         className="min-h-screen flex flex-col bg-white text-slate-900"

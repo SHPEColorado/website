@@ -10,8 +10,8 @@ type UiEvent = {
   extendedProps?: {
     location?: string;
     ticketUrl?: string; // Eventbrite, partner site, Google Form, etc.
-    gcalUrl?: string;   // Google Calendar event link
-    flyerUrl?: string;  // flyer (Drive/URL)
+    gcalUrl?: string; // Google Calendar event link
+    flyerUrl?: string; // flyer (Drive/URL)
   };
 };
 
@@ -19,10 +19,33 @@ function isGoogleForm(url?: string) {
   if (!url) return false;
   return /^(https?:\/\/)?(forms\.gle|docs\.google\.com\/forms)/i.test(url);
 }
+
 function isGoogleCalendar(url?: string) {
   if (!url) return false;
   return /(calendar\.google\.com|google\.com\/calendar)/i.test(url);
 }
+
+/** Treat Google Drive files (incl. uc?export=view) as *flyers*, not RSVP links */
+function isDriveFile(url?: string) {
+  if (!url) return false;
+  try {
+    const u = new URL(url);
+    const host = u.hostname.toLowerCase();
+    if (/^drive\.google\.com$/.test(host)) return true; // drive.google.com/...
+    if (/^lh\d*\.googleusercontent\.com$/.test(host)) return true; // image CDN occasionally
+    if (
+      /^docs\.google\.com$/.test(host) &&
+      /\/(file|document|presentation|spreadsheets|uc)\b/i.test(u.pathname)
+    ) {
+      return true; // docs.google.com/file/d/... or docs.../uc
+    }
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+// Compare destinations, ignoring query/hash and trailing slashes
 function sameDest(a?: string, b?: string) {
   if (!a || !b) return false;
   try {
@@ -35,14 +58,22 @@ function sameDest(a?: string, b?: string) {
     return a === b;
   }
 }
+
 function primaryLabelFor(url: string) {
   return isGoogleForm(url) ? "Sign up" : "RSVP";
 }
 
-export default async function UpcomingEvents({ limit = 4 }: { limit?: number }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/api/events`, {
-    next: { revalidate: 300 },
-  });
+export default async function UpcomingEvents({
+  limit = 4,
+}: {
+  limit?: number;
+}) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/api/events`,
+    {
+      next: { revalidate: 300 },
+    }
+  );
   const events: UiEvent[] = res.ok ? await res.json() : [];
   const upcoming = events.slice(0, limit);
 
@@ -54,7 +85,10 @@ export default async function UpcomingEvents({ limit = 4 }: { limit?: number }) 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between">
           <h2 className="text-2xl font-semibold">Upcoming Events</h2>
-          <Link href="/events" className="text-sm font-medium text-brand-blue-600">
+          <Link
+            href="/events"
+            className="text-sm font-medium text-brand-blue-600"
+          >
             View all
           </Link>
         </div>
@@ -65,10 +99,12 @@ export default async function UpcomingEvents({ limit = 4 }: { limit?: number }) 
             const ticketUrl = e.extendedProps?.ticketUrl;
             const flyerUrl = e.extendedProps?.flyerUrl;
 
+            // Primary CTA exists only if it's NOT a calendar link and NOT a Drive flyer
             const hasPrimary =
               Boolean(ticketUrl) &&
               !sameDest(ticketUrl, gcalUrl) &&
-              !isGoogleCalendar(ticketUrl);
+              !isGoogleCalendar(ticketUrl) &&
+              !isDriveFile(ticketUrl);
 
             return (
               <article
@@ -93,10 +129,12 @@ export default async function UpcomingEvents({ limit = 4 }: { limit?: number }) 
 
                 <p className="mt-1 text-sm text-slate-600">
                   {formatRange(e.start, e.end)}
-                  {e.extendedProps?.location ? ` • ${e.extendedProps.location}` : ""}
+                  {e.extendedProps?.location
+                    ? ` • ${e.extendedProps.location}`
+                    : ""}
                 </p>
 
-                {/* Flyer thumbnail */}
+                {/* Flyer thumbnail (modal on click) */}
                 {flyerUrl ? (
                   <FlyerPreview
                     src={flyerUrl}

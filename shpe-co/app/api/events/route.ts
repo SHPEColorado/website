@@ -13,9 +13,56 @@ type GCalEvent = {
   end?: { date?: string; dateTime?: string; timeZone?: string };
 };
 
+const URL_RE = /https?:\/\/[^\s)]+/gi;
+
+function extractDriveId(raw: string): string | null {
+  try {
+    const u = new URL(raw);
+    if (!/google\.com$/i.test(u.hostname)) return null;
+
+    // /file/d/<id>/...
+    const m = u.pathname.match(/\/file\/d\/([^/]+)/);
+    if (m?.[1]) return m[1];
+
+    // ?id=<id>
+    const id = u.searchParams.get("id");
+    return id || null;
+  } catch {
+    return null;
+  }
+}
+
+function isImagePath(urlStr: string): boolean {
+  try {
+    const u = new URL(urlStr);
+    return /\.(png|jpe?g|webp|gif)$/i.test(u.pathname);
+  } catch {
+    return false;
+  }
+}
+
+// Prefer a Google Drive file (converted to a direct viewer URL), else first image URL
+function pickFlyerUrl(description?: string): string | undefined {
+  if (!description) return undefined;
+  const urls = Array.from(description.matchAll(URL_RE)).map((m) => m[0]);
+
+  // 1) Google Drive file → convert to uc?export=view
+  for (const u of urls) {
+    const id = extractDriveId(u);
+    if (id) return `https://drive.google.com/uc?export=view&id=${id}`;
+  }
+
+  // 2) Direct image URLs
+  const img = urls.find(isImagePath);
+  return img || undefined;
+}
+
 // Prefer Eventbrite, then Google Forms (forms.gle or docs.google.com/forms),
 // otherwise first URL found, otherwise the fallback (the GCal htmlLink).
-function pickTicketUrl(description?: string, fallback?: string): string | undefined {
+function pickTicketUrl(
+  description?: string,
+  fallback?: string
+): string | undefined {
   if (!description) return fallback;
 
   // Collect URLs from both plain text and href="…"
@@ -35,8 +82,8 @@ function pickTicketUrl(description?: string, fallback?: string): string | undefi
 
   // Normalize each URL
   const list = Array.from(urls)
-    .map((u) => u.replace(/&amp;/g, "&"))             // decode common HTML entity
-    .map((u) => u.replace(/[).,]+$/g, ""));           // trim trailing punctuation
+    .map((u) => u.replace(/&amp;/g, "&")) // decode common HTML entity
+    .map((u) => u.replace(/[).,]+$/g, "")); // trim trailing punctuation
 
   // Preference order
   const PREFER = [
@@ -60,22 +107,28 @@ export async function GET(req: Request) {
 
   if (!calendarId || !apiKey) {
     return NextResponse.json(
-      { error: "missing_env", detail: "GCAL_ID and GCAL_API_KEY are required." },
+      {
+        error: "missing_env",
+        detail: "GCAL_ID and GCAL_API_KEY are required.",
+      },
       { status: 500 }
     );
   }
 
-  // Optional query overrides: /api/events?from=2025-01-01&to=2026-01-01
   const { searchParams } = new URL(req.url);
   const from = searchParams.get("from");
   const to = searchParams.get("to");
 
   const now = new Date();
   const timeMin = from ? new Date(from) : now; // default: from now forward
-  const timeMax = to ? new Date(to) : new Date(now.getFullYear(), now.getMonth() + 12, 1); // ~12 months ahead
+  const timeMax = to
+    ? new Date(to)
+    : new Date(now.getFullYear(), now.getMonth() + 12, 1); // ~12 months ahead
 
   const url = new URL(
-    `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`
+    `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(
+      calendarId
+    )}/events`
   );
   url.searchParams.set("key", apiKey);
   url.searchParams.set("singleEvents", "true"); // expand recurring events
@@ -90,7 +143,10 @@ export async function GET(req: Request) {
     const res = await fetch(url.toString());
     if (!res.ok) {
       const text = await res.text();
-      return NextResponse.json({ error: "gcal_error", detail: text }, { status: res.status });
+      return NextResponse.json(
+        { error: "gcal_error", detail: text },
+        { status: res.status }
+      );
     }
 
     const data = (await res.json()) as { items?: GCalEvent[] };
@@ -103,6 +159,7 @@ export async function GET(req: Request) {
         const desc = e.description ?? "";
         const gcalUrl = e.htmlLink ?? "";
         const ticketUrl = pickTicketUrl(desc, gcalUrl);
+        const flyerUrl = pickFlyerUrl(desc);
 
         return {
           id: e.id,
@@ -116,6 +173,7 @@ export async function GET(req: Request) {
             description: desc,
             gcalUrl,
             ticketUrl,
+            flyerUrl,
           },
         };
       });

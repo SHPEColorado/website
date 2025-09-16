@@ -1,4 +1,5 @@
 import Link from "next/link";
+import FlyerPreview from "@/components/events/flyer-preview";
 
 type UiEvent = {
   id: string;
@@ -8,8 +9,9 @@ type UiEvent = {
   url?: string;
   extendedProps?: {
     location?: string;
-    ticketUrl?: string; // e.g., Eventbrite, partner site, Google Form, etc.
-    gcalUrl?: string; // Google Calendar event link
+    ticketUrl?: string; // Eventbrite, partner site, Google Form, etc.
+    gcalUrl?: string;   // Google Calendar event link
+    flyerUrl?: string;  // flyer (Drive/URL)
   };
 };
 
@@ -17,14 +19,10 @@ function isGoogleForm(url?: string) {
   if (!url) return false;
   return /^(https?:\/\/)?(forms\.gle|docs\.google\.com\/forms)/i.test(url);
 }
-
 function isGoogleCalendar(url?: string) {
   if (!url) return false;
-  // Common patterns for GCal event links
   return /(calendar\.google\.com|google\.com\/calendar)/i.test(url);
 }
-
-// Compare destinations, ignoring query/hash and trailing slashes
 function sameDest(a?: string, b?: string) {
   if (!a || !b) return false;
   try {
@@ -37,20 +35,14 @@ function sameDest(a?: string, b?: string) {
     return a === b;
   }
 }
-
 function primaryLabelFor(url: string) {
   return isGoogleForm(url) ? "Sign up" : "RSVP";
 }
 
-export default async function UpcomingEvents({
-  limit = 4,
-}: {
-  limit?: number;
-}) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/api/events`,
-    { next: { revalidate: 300 } }
-  );
+export default async function UpcomingEvents({ limit = 4 }: { limit?: number }) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/api/events`, {
+    next: { revalidate: 300 },
+  });
   const events: UiEvent[] = res.ok ? await res.json() : [];
   const upcoming = events.slice(0, limit);
 
@@ -62,20 +54,17 @@ export default async function UpcomingEvents({
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between">
           <h2 className="text-2xl font-semibold">Upcoming Events</h2>
-          <Link
-            href="/events"
-            className="text-sm font-medium text-brand-blue-600"
-          >
+          <Link href="/events" className="text-sm font-medium text-brand-blue-600">
             View all
           </Link>
         </div>
 
-        <div className="mt-6 grid gap-4 items-stretch sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 items-start">
           {upcoming.map((e) => {
             const gcalUrl = e.extendedProps?.gcalUrl ?? e.url;
             const ticketUrl = e.extendedProps?.ticketUrl;
+            const flyerUrl = e.extendedProps?.flyerUrl;
 
-            // Primary exists when there’s a separate, non-GCal link
             const hasPrimary =
               Boolean(ticketUrl) &&
               !sameDest(ticketUrl, gcalUrl) &&
@@ -84,7 +73,7 @@ export default async function UpcomingEvents({
             return (
               <article
                 key={e.id}
-                className="h-full rounded-lg border border-slate-200 p-4 flex flex-col"
+                className="self-start rounded-lg border border-slate-200 p-4 flex flex-col"
               >
                 {/* Title links to calendar only when a primary CTA exists */}
                 {hasPrimary && gcalUrl ? (
@@ -104,14 +93,21 @@ export default async function UpcomingEvents({
 
                 <p className="mt-1 text-sm text-slate-600">
                   {formatRange(e.start, e.end)}
-                  {e.extendedProps?.location
-                    ? ` • ${e.extendedProps.location}`
-                    : ""}
+                  {e.extendedProps?.location ? ` • ${e.extendedProps.location}` : ""}
                 </p>
 
-                <div className="mt-auto pt-4 flex items-center gap-2">
+                {/* Flyer thumbnail */}
+                {flyerUrl ? (
+                  <FlyerPreview
+                    src={flyerUrl}
+                    alt={`${e.title} flyer`}
+                    className=""
+                  />
+                ) : null}
+
+                {/* Action row pinned to the right */}
+                <div className="mt-4 flex items-center gap-2">
                   {hasPrimary && ticketUrl ? (
-                    // RSVP / Sign up
                     <a
                       href={ticketUrl}
                       target="_blank"
@@ -122,7 +118,6 @@ export default async function UpcomingEvents({
                       {primaryLabelFor(ticketUrl)}
                     </a>
                   ) : (
-                    // View on Google
                     gcalUrl && (
                       <a
                         href={gcalUrl}

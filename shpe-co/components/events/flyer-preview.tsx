@@ -3,22 +3,17 @@
 import { useState } from "react";
 import Image from "next/image";
 
-type Props = {
-  src: string;
-  alt: string;
-  className?: string;
-};
+type Props = { src: string; alt: string; className?: string };
 
 export default function FlyerPreview({ src, alt, className }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      {/* Thumbnail (zoom on hover) */}
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={`group mt-3 relative h-56 sm:h-60 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-blue-600 cursor-zoom-in ${
+        className={`group mt-3 relative h-56 sm:h-60 overflow-hidden focus:outline-none focus:ring-2 focus:ring-brand-blue-600 ${
           className ?? ""
         }`}
         aria-label="Open flyer"
@@ -28,13 +23,12 @@ export default function FlyerPreview({ src, alt, className }: Props) {
           alt={alt}
           fill
           className="object-contain transition-transform duration-200 ease-out group-hover:scale-[1.03]"
-          sizes="(min-width:1024px) 22vw, (min-width:640px) 33vw, 90vw"
+          sizes="(min-width:1280px) 280px, (min-width:1024px) 240px, (min-width:640px) 320px, 92vw"
           quality={60}
           priority={false}
         />
       </button>
 
-      {/* Modal */}
       {open && (
         <div
           className="fixed inset-0 z-[100] bg-black/70 flex items-center justify-center p-4"
@@ -44,7 +38,6 @@ export default function FlyerPreview({ src, alt, className }: Props) {
             className="relative w-full max-w-3xl bg-white rounded-lg shadow-xl p-3"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Limit the image box height so it fits on screen */}
             <div
               className="relative w-full"
               style={{ height: "min(85vh, 80vw)" }}
@@ -53,8 +46,9 @@ export default function FlyerPreview({ src, alt, className }: Props) {
                 src={src}
                 alt={alt}
                 fill
-                sizes="80vw"
                 className="object-contain"
+                sizes="80vw"
+                quality={70}
               />
             </div>
 

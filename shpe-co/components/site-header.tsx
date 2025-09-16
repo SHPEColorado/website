@@ -34,20 +34,12 @@ export default function SiteHeader() {
             aria-label="SHPE Colorado home"
           >
             <Image
-              src="/brand/shpe-co-lockup-horizontal-dark.svg"
+              src="/brand/shpe-co-header.svg"
               alt="SHPE | Colorado Professional"
-              width={180}
-              height={44}
+              width={300}
+              height={60}
               priority
             />
-            {/* Divider + Chapter text */}
-            <span
-              className="hidden md:block h-8 w-px bg-slate-300"
-              aria-hidden
-            />
-            <span className="hidden md:block text-slate-800 tracking-wide">
-              Colorado
-            </span>
           </Link>
 
           {/* Right: Nav (desktop) */}

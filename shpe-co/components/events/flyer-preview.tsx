@@ -18,21 +18,18 @@ export default function FlyerPreview({ src, alt, className }: Props) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={`group mt-3 relative h-56 sm:h-60 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-blue-600 cursor-zoom-in ${className ?? ""}`}
+        className={`group mt-3 relative h-56 sm:h-60 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-blue-600 cursor-zoom-in ${
+          className ?? ""
+        }`}
         aria-label="Open flyer"
       >
         <Image
           src={src}
           alt={alt}
           fill
-          sizes="(min-width:1024px) 20vw, (min-width:640px) 33vw, 90vw"
-          className="
-            object-contain
-            transform-gpu will-change-transform
-            transition-transform duration-300 ease-out
-            motion-reduce:transition-none
-            group-hover:scale-[1.06] group-focus:scale-[1.06]
-          "
+          className="object-contain transition-transform duration-200 ease-out group-hover:scale-[1.03]"
+          sizes="(min-width:1024px) 22vw, (min-width:640px) 33vw, 90vw"
+          quality={60}
           priority={false}
         />
       </button>
@@ -48,7 +45,10 @@ export default function FlyerPreview({ src, alt, className }: Props) {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Limit the image box height so it fits on screen */}
-            <div className="relative w-full" style={{ height: "min(85vh, 80vw)" }}>
+            <div
+              className="relative w-full"
+              style={{ height: "min(85vh, 80vw)" }}
+            >
               <Image
                 src={src}
                 alt={alt}

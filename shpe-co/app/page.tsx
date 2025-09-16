@@ -6,24 +6,28 @@ import UpcomingEvents from "@/components/home/upcoming-events";
 // import InstagramGrid from "@/components/home/instagram-grid";
 import SponsorsSection from "@/components/home/sponsors-section";
 
+import hero from "@/public/images/colorado.jpg";
+import mission from "@/public/images/mission.png";
+
 export default async function Home() {
   return (
     <>
       {/* HERO with background image + gradient scrim + quick actions */}
       <section className="relative isolate border-b border-slate-200 text-slate-900">
-        {/* Background image */}
+        {/* Background image (LCP) */}
         <div className="absolute inset-0 -z-10">
           <Image
-            src="/images/colorado.jpg"
-            alt="" // decorative; text is in the foreground
+            src={hero}
+            alt="Photo of colorado mountains"
             fill
             priority
+            fetchPriority="high"
+            quality={60}
+            placeholder="blur"
             sizes="100vw"
             className="object-cover object-[center_60%] pointer-events-none"
           />
-          {/* Overall wash to keep contrast consistent */}
           <div className="absolute inset-0 bg-white/60 md:bg-white/50" />
-          {/* Left-to-right gradient so text area is extra legible */}
           <div className="absolute inset-y-0 left-0 w-full md:w-2/3 bg-gradient-to-r from-white/90 via-white/70 to-transparent" />
         </div>
 
@@ -96,12 +100,14 @@ export default async function Home() {
                     aspect-[16/10] md:aspect-[4/3]"
           >
             <Image
-              src="/images/mission.png"
+              src={mission}
               alt="SHPE Colorado members at a recent networking event"
               fill
               className="object-cover"
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              priority
+              sizes="(min-width:1024px) 50vw, 100vw"
+              quality={60}
+              placeholder="blur"
+              priority={false}
             />
           </div>
         </div>

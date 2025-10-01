@@ -180,9 +180,10 @@ export default function AboutPage() {
                 Vision
               </h3>
               <p className="mt-3 mx-auto max-w-prose italic text-white/90">
-                SHPE’s vision is a world where Hispanics are highly valued and
-                influential as the leading innovators, scientists,
-                mathematicians and engineers.
+                SHPE’s vision is to cultivate a vibrant, supportive community that empowers families, 
+                fosters professional and personal growth, and builds lifelong networks 
+                through intentional programming, continuous learning, 
+                and meaningful opportunities for advancement.
               </p>
             </div>
           </div>

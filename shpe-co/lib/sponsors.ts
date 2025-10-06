@@ -59,4 +59,10 @@ export const SPONSORS: Sponsor[] = [
     logo: "/sponsors/shhrp.png",
     tier: "partner",
   },
+  {
+    name: "Prospanica",
+    url: "https://prospanica.org/",
+    logo: "/sponsors/prospanica.png",
+    tier: "partner",
+  },
 ];

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 // Put the PDF in /public/docs/
-const PDF_SRC = "/docs/SHPE CO 2023-2024 Corporate Sponsorship - Package.pdf";
+const PDF_SRC = "/docs/SHPE CO 2025-2026 Full Sponsorship Package.pdf";
 const pdfUrl = encodeURI(PDF_SRC);
 // Best-effort “fit to width” for common viewers (PDF.js/Firefox, Chrome, Acrobat)
 const pdfUrlFit = `${pdfUrl}#zoom=page-width&view=FitH`;

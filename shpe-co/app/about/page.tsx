@@ -48,9 +48,9 @@ const TEAM: TeamMember[] = [
     photo: "/images/team/roberto-de-mata.jpg",
   },
   {
-    name: "Wendy Eidson",
-    role: "VP Communications",
-    photo: "/images/team/wendy-eidson.jpg",
+    name: "Cristina Cabello",
+    role: "VP Student Relations",
+    photo: "/images/team/cristina-cabello.jpg",
   },
   {
     name: "Rosa Araiza",

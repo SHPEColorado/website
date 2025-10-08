@@ -27,7 +27,7 @@ export const SPONSORS: Sponsor[] = [
   {
     name: "EATON",
     url: "https://www.eaton.com/us/en-us.html",
-    logo: "/sponsors/eaton.png",
+    logo: "/sponsors/eaton.webp",
     tier: "platinum",
     alt: "Eaton",
   },
@@ -41,7 +41,7 @@ export const SPONSORS: Sponsor[] = [
   {
     name: "Xcel Energy",
     url: "https://www.xcelenergy.com/",
-    logo: "/sponsors/xcel.png",
+    logo: "/sponsors/xcel.webp",
     tier: "bronze",
     alt: "Xcel Energy",
   },
@@ -50,19 +50,19 @@ export const SPONSORS: Sponsor[] = [
   {
     name: "AIAA Rocky Mountain",
     url: "https://www.aiaa-rm.org/",
-    logo: "/sponsors/aiaa.png",
+    logo: "/sponsors/aiaa.webp",
     tier: "partner",
   },
   {
     name: "SHHRP",
     url: "https://shhrp.net/",
-    logo: "/sponsors/shhrp.png",
+    logo: "/sponsors/shhrp.webp",
     tier: "partner",
   },
   {
     name: "Prospanica",
     url: "https://prospanica.org/",
-    logo: "/sponsors/prospanica.png",
+    logo: "/sponsors/prospanica.webp",
     tier: "partner",
   },
 ];

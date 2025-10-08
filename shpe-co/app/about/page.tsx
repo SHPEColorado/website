@@ -15,52 +15,52 @@ const TEAM: TeamMember[] = [
   {
     name: "Violeta Flores",
     role: "President",
-    photo: "/images/team/violeta-flores.jpg",
+    photo: "/images/team/violeta-flores.webp",
   },
   {
     name: "Annamaria Valdez",
     role: "VP Finance",
-    photo: "/images/team/annamaria-valdez.png",
+    photo: "/images/team/annamaria-valdez.webp",
   },
   {
     name: "Luis Monterrosa",
     role: "VP Compliance",
-    photo: "/images/team/luis-monterrosa.jpg",
+    photo: "/images/team/luis-monterrosa.webp",
   },
   {
     name: "Diego Sandoval-Torres",
     role: "VP Marketing",
-    photo: "/images/team/diego-sandoval-torres.jpg",
+    photo: "/images/team/diego-sandoval-torres.webp",
   },
   {
     name: "Carlos Ibarra",
     role: "VP Operations",
-    photo: "/images/team/carlos-ibarra.png",
+    photo: "/images/team/carlos-ibarra.webp",
   },
   {
     name: "Lyann Castillo",
     role: "VP Membership",
-    photo: "/images/team/lyann-castillo.jpeg",
+    photo: "/images/team/lyann-castillo.webp",
   },
   {
     name: "Roberto De Mata",
     role: "VP Professional Development",
-    photo: "/images/team/roberto-de-mata.jpg",
+    photo: "/images/team/roberto-de-mata.webp",
   },
   {
     name: "Cristina Cabello",
     role: "VP Student Relations",
-    photo: "/images/team/cristina-cabello.jpg",
+    photo: "/images/team/cristina-cabello.webp",
   },
   {
     name: "Rosa Araiza",
     role: "VP Corporate Relations",
-    photo: "/images/team/rosa-araiza.jpg",
+    photo: "/images/team/rosa-araiza.webp",
   },
   {
     name: "Luis Infante",
     role: "Lead Web Developer",
-    photo: "/images/team/luis-infante.jpeg",
+    photo: "/images/team/luis-infante.webp",
   },
 ];
 
@@ -111,24 +111,26 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid gap-8 md:grid-cols-12">
           <div className="md:col-span-7">
             <p className="text-slate-700">
-              Today, SHPE Colorado makes a big impact. We’re the largest
+              Today, SHPE Colorado makes a big impact. We&apos;re the largest
               association in the state of Colorado for Hispanics in STEM. We
               meet each of our student and professional members where they
               are—offering effective training, mentorship, and programming for
               our vibrant community.
             </p>
             <p className="mt-4 text-slate-700">
-              SHPE Colorado’s growth isn’t slowing down anytime soon. As we
-              continue to expand our membership, programs, and partnerships,
-              we’re guided by a clear mission, a bright vision, and the core
-              values demonstrated by our founders.
+              SHPE Colorado&apos;s growth isn&apos;t slowing down anytime soon.
+              As we continue to expand our membership, programs, and
+              partnerships, we&apos;re guided by a clear mission, a bright
+              vision, and the core values demonstrated by our founders.
             </p>
           </div>
           <div className="md:col-span-5">
             <div className="relative overflow-hidden rounded-xl ring-1 ring-slate-200 bg-slate-100 aspect-[4/3] md:aspect-[3/2]">
               <Image
                 src="/images/group-pic.webp"
-                alt=""
+                alt="SHPE Colorado members at a recent networking event"
+                fetchPriority="high"
+                quality={80}
                 fill
                 sizes="(min-width:1024px) 480px, 100vw"
                 className="object-cover object-center"
@@ -180,10 +182,11 @@ export default function AboutPage() {
                 Vision
               </h3>
               <p className="mt-3 mx-auto max-w-prose italic text-white/90">
-                SHPE’s vision is to cultivate a vibrant, supportive community that empowers families, 
-                fosters professional and personal growth, and builds lifelong networks 
-                through intentional programming, continuous learning, 
-                and meaningful opportunities for advancement.
+                SHPE&apos;s vision is to cultivate a vibrant, supportive
+                community that empowers families, fosters professional and
+                personal growth, and builds lifelong networks through
+                intentional programming, continuous learning, and meaningful
+                opportunities for advancement.
               </p>
             </div>
           </div>
@@ -245,8 +248,8 @@ export default function AboutPage() {
           <div className="md:col-span-7">
             <h2 className="text-2xl font-semibold">Region 3. ¡Está aquí!</h2>
             <p className="mt-3 text-slate-700">
-              Region 3 is SHPE’s largest region geographically consisting of
-              chapters from Colorado, Idaho, Kansas, Montana, Nebraska, New
+              Region 3 is SHPE&apos;s largest region geographically consisting
+              of chapters from Colorado, Idaho, Kansas, Montana, Nebraska, New
               Mexico, North Dakota, South Dakota, Utah, and Wyoming. In 2014,
               the Bureau of Economic Analysis reported that Colorado, North
               Dakota, and Wyoming were among the top 5 states with the fastest
@@ -260,12 +263,13 @@ export default function AboutPage() {
             <figure className="rounded-xl ring-1 ring-slate-200 bg-white">
               <div className="relative aspect-[16/9] md:aspect-[2/1] p-2">
                 <Image
-                  src="/images/region3.png"
+                  src="/images/region3.webp"
                   alt="SHPE Regions map highlighting Region 3"
                   fill
                   sizes="(min-width:1024px) 560px, 100vw"
                   className="object-contain"
                   priority={false}
+                  quality={60}
                 />
               </div>
             </figure>
@@ -336,6 +340,8 @@ function Avatar({ name, src }: { name: string; src?: string }) {
       alt={name}
       width={96}
       height={96}
+      sizes="96px"
+      quality={90}
       className="mx-auto h-24 w-24 rounded-full object-cover ring-1 ring-slate-200"
     />
   ) : (

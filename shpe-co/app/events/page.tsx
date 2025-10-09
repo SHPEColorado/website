@@ -13,12 +13,12 @@ export default function EventsPage() {
   return (
     <section className="py-6">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h1 className="text-2xl font-semibold text-center">Events</h1>
+        <h1 className="text-3xl font-semibold text-center tracking-tight">Events</h1>
         <p className="mt-2 text-slate-600 text-center">
-          See upcoming events and tap any item to get tickets on Eventbrite.
+          See upcoming events and tap any item to RSVP.
         </p>
 
-        <div className="mt-6">
+        <div className="mt-4">
           <EventsCalendar />
         </div>
 

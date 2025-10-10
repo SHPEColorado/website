@@ -66,7 +66,7 @@ export default async function JobBoardPage() {
             <div className="relative h-14 w-40 shrink-0">
               {/* Put your logo at /public/sponsors/sponsor.png */}
               <Image
-                src="/sponsors/xcel.png"
+                src="/sponsors/xcel.webp"
                 alt="Xcel Energy"
                 fill
                 className="object-contain"

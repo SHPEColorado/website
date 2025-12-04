@@ -74,7 +74,7 @@ export default function SponsorsSection() {
             <TierRow
               tier="partner"
               items={groups.partner}
-              cols={3}
+              cols={2}
               size="sm"
               hideBadge
             />

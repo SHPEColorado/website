@@ -59,10 +59,10 @@ export const SPONSORS: Sponsor[] = [
     logo: "/sponsors/shhrp.webp",
     tier: "partner",
   },
-  {
-    name: "Prospanica",
-    url: "https://prospanica.org/",
-    logo: "/sponsors/prospanica.webp",
-    tier: "partner",
-  },
+  // {
+  //   name: "Prospanica",
+  //   url: "https://prospanica.org/",
+  //   logo: "/sponsors/prospanica.webp",
+  //   tier: "partner",
+  // },
 ];

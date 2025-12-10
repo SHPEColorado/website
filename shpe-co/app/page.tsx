@@ -22,7 +22,6 @@ export default async function Home() {
             fill
             priority
             fetchPriority="high"
-            quality={80}
             placeholder="blur"
             sizes="100vw"
             className="object-cover object-[center_60%] pointer-events-none"
@@ -105,7 +104,6 @@ export default async function Home() {
               fill
               className="object-cover"
               sizes="(min-width:1024px) 50vw, 100vw"
-              quality={80}
               placeholder="blur"
               priority={false}
             />

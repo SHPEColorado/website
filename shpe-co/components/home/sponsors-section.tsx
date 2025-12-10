@@ -164,7 +164,6 @@ function TierRow({
               alt={s.alt ?? `${s.name} logo`}
               width={640}
               height={300}
-              quality={60}
               priority={priority}
               sizes={sizesAttr}
               className={`${imgHeights} ${maxW} w-auto object-contain`}

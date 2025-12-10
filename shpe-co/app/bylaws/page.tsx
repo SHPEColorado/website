@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 // Put the PDF in /public/docs/
-const PDF_SRC = "/docs/SHPE_CO_2024_Bylaws.pdf";
+const PDF_SRC = "/docs/SHPE_CO_2025_Bylaws.pdf";
 const pdfUrl = encodeURI(PDF_SRC);
 // Best-effort hint to fit horizontally in viewers that support it
 const pdfUrlFit = `${pdfUrl}#zoom=page-width&view=FitH`;

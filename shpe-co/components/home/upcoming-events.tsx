@@ -1,6 +1,8 @@
 import Link from "next/link";
 import FlyerPreview from "@/components/events/flyer-preview";
 
+const DISPLAY_TZ = process.env.NEXT_PUBLIC_TIME_ZONE || "America/Denver";
+
 type UiEvent = {
   id: string;
   title: string;
@@ -128,10 +130,8 @@ export default async function UpcomingEvents({
                 )}
 
                 <p className="mt-1 text-sm text-slate-600">
-                  {formatRange(e.start, e.end)}
-                  {e.extendedProps?.location
-                    ? ` • ${e.extendedProps.location}`
-                    : ""}
+                  {formatRange(e.start, e.end, DISPLAY_TZ)}
+                  {e.extendedProps?.location ? ` • ${e.extendedProps.location}` : ""}
                 </p>
 
                 {/* Flyer thumbnail (modal on click) */}
@@ -178,21 +178,54 @@ export default async function UpcomingEvents({
   );
 }
 
-function formatRange(start: string, end?: string) {
-  const s = new Date(start);
-  const e = end ? new Date(end) : undefined;
-  const opts: Intl.DateTimeFormatOptions = {
+function formatRange(start: string, end?: string, tz = DISPLAY_TZ) {
+  // detect all-day (date-only) strings
+  const isAllDayStart = /^\d{4}-\d{2}-\d{2}$/.test(start);
+  const isAllDayEnd   = end ? /^\d{4}-\d{2}-\d{2}$/.test(end) : false;
+
+  // build Date objects safely
+  const s = isAllDayStart ? new Date(`${start}T00:00:00`) : new Date(start);
+  const e = end
+    ? isAllDayEnd
+      ? new Date(`${end}T00:00:00`)
+      : new Date(end)
+    : undefined;
+
+  // formatters pinned to the display timezone
+  const dateTimeFmt = new Intl.DateTimeFormat(undefined, {
+    timeZone: tz,
     month: "short",
     day: "numeric",
     hour: "numeric",
     minute: "2-digit",
-  };
-  const date = new Intl.DateTimeFormat(undefined, opts).format(s);
-  if (!e) return date;
-  const sameDay = s.toDateString() === e.toDateString();
-  const endFmt = new Intl.DateTimeFormat(
-    undefined,
-    sameDay ? { hour: "numeric", minute: "2-digit" } : opts
-  ).format(e);
-  return sameDay ? `${date} – ${endFmt}` : `${date} → ${endFmt}`;
+  });
+  const timeFmt = new Intl.DateTimeFormat(undefined, {
+    timeZone: tz,
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  const dateOnlyFmt = new Intl.DateTimeFormat(undefined, {
+    timeZone: tz,
+    month: "short",
+    day: "numeric",
+  });
+
+  // same-day check in the same TZ (not system default)
+  const sameDay =
+    e &&
+    s.toLocaleDateString("en-CA", { timeZone: tz }) ===
+      e.toLocaleDateString("en-CA", { timeZone: tz });
+
+  // all-day events: just show the day(s)
+  if (isAllDayStart && (!end || isAllDayEnd)) {
+    if (!e || sameDay) return dateOnlyFmt.format(s);
+    return `${dateOnlyFmt.format(s)} → ${dateOnlyFmt.format(e)}`;
+  }
+
+  // timed events
+  const startStr = sameDay ? dateTimeFmt.format(s) : dateTimeFmt.format(s);
+  if (!e) return startStr;
+
+  const endStr = sameDay ? timeFmt.format(e) : dateTimeFmt.format(e);
+  return sameDay ? `${startStr} – ${endStr}` : `${startStr} → ${endStr}`;
 }

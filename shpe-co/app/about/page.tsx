@@ -38,14 +38,14 @@ const TEAM: TeamMember[] = [
     photo: "/images/team/carlos-ibarra.webp",
   },
   {
-    name: "Lyann Castillo",
-    role: "VP Membership",
-    photo: "/images/team/lyann-castillo.webp",
+    name: "Melina Dimas",
+    role: "VP Communications",
+    photo: "/images/team/melina-dimas.jpeg",
   },
   {
-    name: "Roberto De Mata",
+    name: "Gabriela Ortiz",
     role: "VP Professional Development",
-    photo: "/images/team/roberto-de-mata.webp",
+    photo: "/images/team/gabriela-ortiz.jpeg",
   },
   {
     name: "Cristina Cabello",

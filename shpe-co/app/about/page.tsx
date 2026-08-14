@@ -58,6 +58,16 @@ const TEAM: TeamMember[] = [
     photo: "/images/team/rosa-araiza.webp",
   },
   {
+    name: "Andrea Godoy",
+    role: "VP Membership",
+    photo: "/images/team/andrea-godoy.jpeg",
+  },
+  {
+    name: "Eddie Almeida",
+    role: "VP Operations",
+    photo: "/images/team/eddie-almeida.png",
+  },
+  {
     name: "Luis Infante",
     role: "Lead Web Developer",
     photo: "/images/team/luis-infante.webp",

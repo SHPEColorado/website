@@ -318,7 +318,7 @@ export default function AboutPage() {
       <section className="border-t border-slate-200 py-8">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-semibold text-center">Meet the Team</h2>
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          <div className="mt-6 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {TEAM.map((m) => (
               <article
                 key={m.name}

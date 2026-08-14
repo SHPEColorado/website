@@ -40,12 +40,12 @@ const TEAM: TeamMember[] = [
   {
     name: "Melina Dimas",
     role: "VP Communications",
-    photo: "/images/team/melina-dimas.jpeg",
+    photo: "/images/team/melina-dimas.jpg",
   },
   {
     name: "Gabriela Ortiz",
     role: "VP Professional Development",
-    photo: "/images/team/gabriela-ortiz.jpeg",
+    photo: "/images/team/gabriela-ortiz.jpg",
   },
   {
     name: "Cristina Cabello",
@@ -60,7 +60,7 @@ const TEAM: TeamMember[] = [
   {
     name: "Andrea Godoy",
     role: "VP Membership",
-    photo: "/images/team/andrea-godoy.jpeg",
+    photo: "/images/team/andrea-godoy.jpg",
   },
   {
     name: "Eddie Almeida",

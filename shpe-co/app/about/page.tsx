@@ -33,11 +33,6 @@ const TEAM: TeamMember[] = [
     photo: "/images/team/diego-sandoval-torres.webp",
   },
   {
-    name: "Carlos Ibarra",
-    role: "VP Operations",
-    photo: "/images/team/carlos-ibarra.webp",
-  },
-  {
     name: "Melina Dimas",
     role: "VP Communications",
     photo: "/images/team/melina-dimas.jpg",

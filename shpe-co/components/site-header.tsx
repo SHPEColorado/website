@@ -39,6 +39,7 @@ export default function SiteHeader() {
               width={300}
               height={60}
               priority
+              className="h-10 w-auto max-w-[200px] shrink-0 object-contain"
             />
           </Link>
 
@@ -65,7 +66,7 @@ export default function SiteHeader() {
                 >
                   {item.label}
                 </Link>
-              )
+              ),
             )}
             {/* Emphasis for Join */}
             <a
@@ -117,7 +118,7 @@ export default function SiteHeader() {
                 >
                   {item.label}
                 </Link>
-              )
+              ),
             )}
             <a
               href="https://www.shpe.org/membership"

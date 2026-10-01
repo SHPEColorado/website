@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
     ],
     // Serve modern formats when possible
     formats: ["image/avif", "image/webp"],
-    qualities: [60, 75],
+    qualities: [60, 70, 75, 80, 90],
     deviceSizes: [360, 414, 640, 768, 1024, 1280, 1536, 1920],
     imageSizes: [64, 96, 128, 160, 192, 224, 256, 320, 384],
   },

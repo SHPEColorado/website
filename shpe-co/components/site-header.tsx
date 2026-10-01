@@ -39,7 +39,7 @@ export default function SiteHeader() {
               width={300}
               height={60}
               priority
-              className="h-10 w-auto max-w-[200px] shrink-0 object-contain"
+              className="h-10 w-auto max-w-50 shrink-0 object-contain"
             />
           </Link>
 

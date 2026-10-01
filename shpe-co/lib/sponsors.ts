@@ -1,4 +1,10 @@
-export type SponsorTier = "platinum" | "gold" | "silver" | "bronze" | "partner";
+export type SponsorTier =
+  | "platinum"
+  | "gold"
+  | "silver"
+  | "bronze"
+  | "domain"
+  | "partner";
 
 export type Sponsor = {
   name: string;
@@ -13,6 +19,7 @@ export const SPONSOR_TIERS: SponsorTier[] = [
   "gold",
   "silver",
   "bronze",
+  "domain",
 ];
 
 export const TIER_ORDER: SponsorTier[] = [
@@ -20,6 +27,7 @@ export const TIER_ORDER: SponsorTier[] = [
   "gold",
   "silver",
   "bronze",
+  "domain",
   "partner",
 ];
 
@@ -45,14 +53,30 @@ export const SPONSORS: Sponsor[] = [
     tier: "bronze",
     alt: "Xcel Energy",
   },
+  {
+    name: "DEN",
+    url: "https://www.flydenver.com/",
+    logo: "/sponsors/den.png",
+    tier: "bronze",
+    alt: "DEN",
+  },
+
+  // Domain (use tier "domain")
+  {
+    name: "AECOMM",
+    url: "https://aecom.com/",
+    logo: "/sponsors/aecomm.png",
+    tier: "domain",
+    alt: "AECOMM",
+  },
 
   // Partnerships (use tier "partner")
-  {
-    name: "AIAA Rocky Mountain",
-    url: "https://www.aiaa-rm.org/",
-    logo: "/sponsors/aiaa.webp",
-    tier: "partner",
-  },
+  // {
+  //   name: "AIAA Rocky Mountain",
+  //   url: "https://www.aiaa-rm.org/",
+  //   logo: "/sponsors/aiaa.webp",
+  //   tier: "partner",
+  // },
   {
     name: "SHHRP",
     url: "https://shhrp.net/",

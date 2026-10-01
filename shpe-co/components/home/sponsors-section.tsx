@@ -44,8 +44,9 @@ export default function SponsorsSection() {
               platinum: { cols: 1, size: "md" },
               gold: { cols: 1, size: "lg" },
               silver: { cols: 2, size: "md" },
-              bronze: { cols: 2, size: "md" },
-              partner: { cols: 2, size: "sm" }, // unused here
+              bronze: { cols: 3, size: "md" },
+              domain: { cols: 1, size: "sm" },
+              partner: { cols: 1, size: "sm" }, // unused here
             };
 
             const { cols, size } = config[tier];
@@ -74,7 +75,7 @@ export default function SponsorsSection() {
             <TierRow
               tier="partner"
               items={groups.partner}
-              cols={2}
+              cols={1}
               size="sm"
               hideBadge
             />
@@ -107,19 +108,19 @@ function TierRow({
     size === "xl"
       ? "h-20 sm:h-24 lg:h-28"
       : size === "lg"
-      ? "h-16 sm:h-20 lg:h-24"
-      : size === "md"
-      ? "h-14 sm:h-16 lg:h-18"
-      : "h-12 sm:h-14 lg:h-16";
+        ? "h-16 sm:h-20 lg:h-24"
+        : size === "md"
+          ? "h-14 sm:h-16 lg:h-18"
+          : "h-12 sm:h-14 lg:h-16";
 
   const maxW =
     size === "xl"
       ? "max-w-[min(85vw,520px)]"
       : size === "lg"
-      ? "max-w-[420px]"
-      : size === "md"
-      ? "max-w-[320px]"
-      : "max-w-[240px]";
+        ? "max-w-[420px]"
+        : size === "md"
+          ? "max-w-[320px]"
+          : "max-w-[240px]";
 
   const sizesAttr =
     size === "xl"
@@ -131,8 +132,8 @@ function TierRow({
     cols === 1
       ? "grid-cols-1 justify-center"
       : cols === 2
-      ? "grid-cols-1 sm:grid-cols-2 justify-center"
-      : "grid-cols-2 sm:grid-cols-3 justify-center";
+        ? "grid-cols-1 sm:grid-cols-2 justify-center"
+        : "grid-cols-2 sm:grid-cols-3 justify-center";
 
   // If we hide the badge, don't allocate the left column.
   const wrapperClass = hideBadge
@@ -183,6 +184,7 @@ function groupByTier(items: Sponsor[]) {
     gold: [],
     silver: [],
     bronze: [],
+    domain: [],
     partner: [],
   };
   for (const s of items) out[s.tier].push(s);
@@ -194,6 +196,7 @@ const ReadableTier: Record<SponsorTier, string> = {
   gold: "Gold",
   silver: "Silver",
   bronze: "Bronze",
+  domain: "Domain",
   partner: "Partner",
 };
 
@@ -209,6 +212,7 @@ function TierBadge({
     gold: "bg-amber-300/80 text-amber-900 ring-1 ring-amber-400",
     silver: "bg-zinc-200 text-zinc-800 ring-1 ring-zinc-400",
     bronze: "bg-orange-300/80 text-amber-900 ring-1 ring-amber-400",
+    domain: "bg-[#3e6ea5] text-white ring-1 ring-[#3e6ea5]",
     partner: "bg-slate-100 text-slate-700 ring-1 ring-slate-300",
   };
 
@@ -216,10 +220,10 @@ function TierBadge({
     size === "xl"
       ? "text-base px-4 py-1.5"
       : size === "lg"
-      ? "text-sm px-3.5 py-1"
-      : size === "md"
-      ? "text-sm px-3 py-0.5"
-      : /* sm */ "text-xs px-2.5 py-0.5";
+        ? "text-sm px-3.5 py-1"
+        : size === "md"
+          ? "text-sm px-3 py-0.5"
+          : /* sm */ "text-xs px-2.5 py-0.5";
 
   // Make big badges feel a touch bolder
   const ringWidth = size === "xl" || size === "lg" ? "ring-2" : "";

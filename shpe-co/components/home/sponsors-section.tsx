@@ -46,7 +46,7 @@ export default function SponsorsSection() {
               silver: { cols: 2, size: "md" },
               bronze: { cols: 3, size: "md" },
               domain: { cols: 1, size: "sm" },
-              partner: { cols: 1, size: "sm" }, // unused here
+              partner: { cols: 3, size: "sm" }, // unused here
             };
 
             const { cols, size } = config[tier];
@@ -75,7 +75,7 @@ export default function SponsorsSection() {
             <TierRow
               tier="partner"
               items={groups.partner}
-              cols={1}
+              cols={3}
               size="sm"
               hideBadge
             />

@@ -89,4 +89,16 @@ export const SPONSORS: Sponsor[] = [
   //   logo: "/sponsors/prospanica.webp",
   //   tier: "partner",
   // },
+  {
+    name: "CRI",
+    url: "https://www.communityresourcesinc.org/",
+    logo: "/sponsors/cri.png",
+    tier: "partner",
+  },
+  {
+    name: "Servicos De La Raza",
+    url: "https://serviciosdelaraza.org/es/",
+    logo: "/sponsors/sdlr.png",
+    tier: "partner",
+  },
 ];
